@@ -2,16 +2,15 @@ const express = require('express');
 const router = express.Router();
 
 // Mock Data Collection
-let users = [
-  { id: 1, name: 'Alice', role: 'admin' },
-  { id: 2, name: 'Bob', role: 'user' }
+let products = [
+  { id: 1, name: 'Alice', quantity: '24' },
+  { id: 2, name: 'Bob', quantity: 'user30' }
 ];
 
-// 1. GET /api/<resource> (With Query Filtering)
 router.get('/', (req, res) => {
-  let result = users;
-  if (req.query.role) {
-    result = result.filter(u => u.role === req.query.role);
+  let result = products;
+  if (req.query.quantity) {
+    result = result.filter(u => u.quantity === req.query.quantity);
   }
   res.status(200).json({
     success: true,
@@ -41,8 +40,8 @@ router.get('/:id', (req, res) => {
 
 // 3. POST /api/<resource> (Create New Item)
 router.post('/', (req, res) => {
-  const { name, role } = req.body;
-  if (!name || !role) {
+  const { name, quantity } = req.body;
+  if (!name || !quantity) {
     return res.status(400).json({
       success: false,
       error: { code: 'BAD_REQUEST', message: 'Missing mandatory fields.' }
@@ -59,14 +58,14 @@ router.post('/', (req, res) => {
 
 // 4. DELETE /api/<resource>/:id (Remove Item)
 router.delete('/:id', (req, res) => {
-  const index = users.findIndex(u => u.id === parseInt(req.params.id));
+  const index = quantity.findIndex(u => u.id === parseInt(req.params.id));
   if (index === -1) {
     return res.status(404).json({
       success: false,
       error: { code: 'NOT_FOUND', message: 'Resource not found.' }
     });
   }
-  users.splice(index, 1);
+  quantity.splice(index, 1);
   res.status(204).send();
 });
 
